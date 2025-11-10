@@ -14,3 +14,7 @@
 .bg-primary {
   background-color: #5044e5;
 }
+.bg-hero {
+  /* background-image: url(./assets/gradientBackground.png); */
+  height: 70vh;
+}
