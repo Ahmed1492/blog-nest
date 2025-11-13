@@ -9,6 +9,7 @@ import AddBlog from "./pages/admin/AddBlog";
 import Comments from "./pages/admin/Comments";
 import ListBlogs from "./pages/admin/ListBlogs";
 import Login from "./components/admin/Login";
+import "quill/dist/quill.snow.css";
 
 const App = () => {
   return (

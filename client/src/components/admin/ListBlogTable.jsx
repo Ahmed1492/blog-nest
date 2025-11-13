@@ -67,7 +67,7 @@ const ListBlogTable = () => {
                 {data.isPublished ? "Published" : "Unpublished"}
               </td>
               <td className="flex items-center gap-3 px-6  py-3">
-                <button className="border border-gray-400 px-4 py-2 rounded-md cursor-pointer min-w-28">
+                <button className="border border-gray-400 px-4 py-3 rounded-md cursor-pointer min-w-28">
                   {!data.isPublished ? "Published" : "Unpublished"}
                 </button>
                 <img className="w-9" src={assets.cross_icon} alt="" />

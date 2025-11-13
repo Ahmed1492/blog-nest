@@ -60,7 +60,7 @@ const LatestBlogs = () => {
         <tbody>
           {dashboard_data.recentBlogs.map((data, index) => (
             <tr key={index} className="border-gray-200  border-b text-gray-600">
-              <td className="px-5  py-3 ">{index + 1}</td>
+              <td className="px-5  py-3 font-semibold ">{index + 1}</td>
               <td className="px-3  py-3 ">{data.title}</td>
               <td className="px-6  py-3 ">{formatDate(data.updatedAt)}</td>
               <td
@@ -71,7 +71,7 @@ const LatestBlogs = () => {
                 {data.isPublished ? "Published" : "Unpublished"}
               </td>
               <td className="flex items-center gap-3 px-6  py-3">
-                <button className="border border-gray-400 px-4 py-2 rounded-md cursor-pointer min-w-28">
+                <button className="border border-gray-400 px-4 py-3 rounded-md cursor-pointer min-w-28">
                 {!data.isPublished ? "Published" : "Unpublished"}
 
                   

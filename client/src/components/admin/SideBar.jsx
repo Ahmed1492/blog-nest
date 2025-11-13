@@ -6,8 +6,8 @@ const SideBar = () => {
     "flex items-center gap-4 py-4 ps-10 duration-100 cursor-pointer hover:bg-slate-100";
 
   return (
-    <div className="bg-white  py-5 min-w-[40%] sm:min-w-[35%] lg:min-w-[30%] xl:min-w-[18%] shadow">
-      <ul className="flex flex-col gap-3 text-gray-600">
+    <div className="bg-white  py-5 min-w-[20rem] sm:min-w-[16rem] md:min-w-[18rem] lg:min-w-[21rem]  xl:min-w-[18%] shadow">
+      <ul className="flex flex-col gap-3 text-gray-800 font-medium">
         <li>
           <NavLink
             to="/admin"
