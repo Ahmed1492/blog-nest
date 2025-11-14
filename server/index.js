@@ -3,6 +3,7 @@ import 'dotenv/config';
 import cors from 'cors';
 import { connectDB } from './db/connection.js';
 import adminRouter from './src/routes/admin.router.js';
+import blogRouter from './src/routes/blog.router.js';
 const app = express();
 const port = process.env.PORT || 2000;
 
@@ -16,6 +17,7 @@ connectDB();
 
 // routes
 app.use('/api/admin', adminRouter);
+app.use('/api/blog', blogRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
