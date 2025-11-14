@@ -30,7 +30,7 @@ const Blog = () => {
     return <Loader />;
   }
   return (
-    <div className="flex flex-col gap-5 mt-6">
+    <div className="flex flex-col gap-5 mt-6 ">
       <BlogDetails blog={blog} />
       <div className="w-[40%] m-auto  ">
         <BlogComments />
