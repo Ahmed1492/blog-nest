@@ -1,14 +1,27 @@
 import { Router } from "express";
-import { createBlog } from "../controllers/blog.controller.js";
+import { createBlog, getBlogs, getBlogById, deleteBlogById, togglePublish, getBlogsAdmin } from "../controllers/blog.controller.js";
 import upload from "../middleware/multer.js";
 import isAuth from "../middleware/auth.js";
 
 const router = Router();
 
-router.post('/create-blog', isAuth, upload.single('image'), createBlog);
+// create blog
+router.post('/create-blog', upload.single('image'), isAuth, createBlog);
+
+// list all blogs (is published = true)
+router.get('/', getBlogs);
 
 
+// list all blogs (Admin)
+router.get('/admin-blogs', getBlogsAdmin);
 
+// get blog by id
+router.get('/:id', getBlogById);
 
+// delete blog by id
+router.post('/', isAuth, deleteBlogById);
+
+// toggle blog Publish
+router.post('/toggle-publish', isAuth, togglePublish);
 
 export default router;  

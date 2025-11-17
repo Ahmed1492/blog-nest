@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 import 'dotenv/config';
+import Blog from "../../db/models/blog.model.js";
+import Comment from "../../db/models/comment.model.js";
 
 
 const generateToken = async (email) => {
@@ -22,6 +24,26 @@ export const adminLogin = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     return res.json({ success: false, err: error.message });
+
+  }
+};
+
+export const getDashboard = async (req, res, next) => {
+  try {
+    const recentBlogs = await Blog.find({}).limit(5).sort({ createdAt: -1 });
+    const blogs = await Blog.countDocuments();
+    const comments = await Comment.countDocuments();
+    const draftBlogs = await Blog.countDocuments({ isPublished: false });
+    const dashboardData = {
+      recentBlogs,
+      blogs,
+      comments,
+      draftBlogs
+    };
+    return res.json({ success: true, dashboardData });
+  } catch (error) {
+    console.log(error);
+    return res.json({ success: false, err: error.message, stack: error.stack });
 
   }
 };
