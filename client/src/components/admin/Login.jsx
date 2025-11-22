@@ -1,12 +1,35 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
+  const { backEndUrl } = useAppContext();
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      let myResponse = await axios.post(
+        `${backEndUrl}/api/admin/login`,
+        userData
+      );
+      console.log(myResponse.data);
+
+      if (myResponse.data.success) {
+        localStorage.setItem("blog-nest-token", myResponse.data.token);
+        navigate("/");
+      } else {
+        toast.error(myResponse.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
   return (
     <div className="flex items-center justify-center h-screen">

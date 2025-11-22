@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BlogCard from "./BlogCard";
 import { blog_data } from "../assets/assets";
 import { motion } from "motion/react";
+import { useAppContext } from "../context/AppContext";
 
 const BlogList = () => {
   const filters = ["All", "Technology", "Startup", "Lifestyle", "Finance"];
   const [currentLink, setCurrentLink] = useState("All");
+
+  const { fetchBlogs } = useAppContext();
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
   return (
     <div>
       <div className="flex items-center justify-center gap-2 relative my-10">
@@ -29,7 +35,7 @@ const BlogList = () => {
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8 w-[80%] m-auto">
+      <div className="w-[84%] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
         {blog_data.map((blog, index) => {
           if (currentLink === blog.category || currentLink === "All")
             return (
