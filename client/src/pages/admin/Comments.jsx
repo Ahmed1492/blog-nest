@@ -1,15 +1,85 @@
 import React, { useEffect, useState } from "react";
 import CommentsTable from "../../components/admin/CommentsTable";
 import { comments_data } from "../../assets/assets";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useAppContext } from "../../context/AppContext";
 
 const Comments = () => {
+  const { backEndUrl, token } = useAppContext();
   const [comments, setComments] = useState([]);
   const [filter, setFilter] = useState("Not Approved");
+
   const fetchComments = async () => {
     try {
-      setComments(comments_data);
+      let myResposne = await axios.get(
+        `${backEndUrl}/api/comment/comments-admin`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      console.log(myResposne.data);
+      if (myResposne.data.success) {
+        setComments(myResposne.data.comments);
+      } else {
+        toast.error(myResposne.data.message);
+      }
     } catch (error) {
-      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
+  const approveComment = async (id) => {
+    try {
+      let myResposne = await axios.post(
+        `${backEndUrl}/api/comment/approve-comment`,
+        {
+          id,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      console.log(myResposne.data);
+      if (myResposne.data.success) {
+        toast.success(myResposne.data.message);
+      } else {
+        toast.error(myResposne.data.message);
+      }
+      await fetchComments();
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const deleteComment = async (id) => {
+    try {
+      let myResponse = await axios.post(
+        `${backEndUrl}/api/comment/delete/${id}`,
+        {}, // empty body
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      console.log(myResponse.data);
+
+      if (myResponse.data.success) {
+        toast.success(myResponse.data.message);
+      } else {
+        toast.error(myResponse.data.message);
+      }
+
+      await fetchComments();
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
@@ -39,7 +109,12 @@ const Comments = () => {
           </button>
         </div>
       </div>
-      <CommentsTable />
+      <CommentsTable
+        comments={comments}
+        approveComment={approveComment}
+        deleteComment={deleteComment}
+        filter={filter}
+      />
     </div>
   );
 };

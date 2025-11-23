@@ -1,7 +1,7 @@
 import React from "react";
 import { assets, comments_data } from "../../assets/assets";
 
-const CommentsTable = () => {
+const CommentsTable = ({ comments, deleteComment, approveComment, filter }) => {
   function formatDate(isoString) {
     const date = new Date(isoString);
 
@@ -51,41 +51,58 @@ const CommentsTable = () => {
         </tr>
       </thead>
       <tbody>
-        {comments_data.map((comment, index) => (
-          <tr key={index} className="border-gray-200  border-ba text-gray-600">
-            <td className="ps-3 pe-6  py-4   ">
-              <p className=" ">
-                <span className="font-semibold ">Blog : </span>
-                {comment.blog.title}
-              </p>
-              <div className="mt-4  flex flex-col gap-1 mb-4 ">
+        {comments
+          ?.filter((comment) => {
+            if (filter === "Not Approved") return !comment.isApproved;
+            if (filter === "Approved") return comment.isApproved;
+            return true; // "All"
+          })
+          .map((comment, index) => (
+            <tr key={index} className="border-gray-200 border-ba text-gray-600">
+              <td className="ps-3 pe-6 py-4">
                 <p>
-                  <span className="font-semibold">Name : </span>
-                  {comment.name}
-                </p>
-                <p>
-                  <span className="font-semibold">Comment : </span>
+                  <span className="font-semibold">Blog : </span>
                   {comment.content}
                 </p>
-              </div>
-            </td>
-            <td className="px-6  py-2 ">{formatDate(comment.createdAt)}</td>
-            <td className=" px-6  py-3">
-              <div className="flex items-center gap-2.5">
-                <img
-                  className="w-5 cursor-pointer"
-                  src={assets.tick_icon}
-                  alt=""
-                />
-                <img
-                  className="w-5 cursor-pointer"
-                  src={assets.bin_icon}
-                  alt=""
-                />
-              </div>
-            </td>
-          </tr>
-        ))}
+                <div className="mt-4 flex flex-col gap-1 mb-4">
+                  <p>
+                    <span className="font-semibold">Name : </span>
+                    {comment.name}
+                  </p>
+                  <p>
+                    <span className="font-semibold">Comment : </span>
+                    {comment.content}
+                  </p>
+                </div>
+              </td>
+
+              <td className="px-6 py-2">{formatDate(comment.createdAt)}</td>
+
+              <td className="px-6 py-3">
+                <div className="flex items-center  gap-2.5">
+                  {!comment.isApproved ? (
+                    <img
+                      onClick={() => approveComment(comment._id)}
+                      className="w-5 cursor-pointer"
+                      src={assets.tick_icon}
+                      alt=""
+                    />
+                  ) : (
+                    <span className="bg-green-100 text-green-700 border border-green-600 px-3 py-1 rounded-full text-sm">
+                      Approved
+                    </span>
+                  )}
+
+                  <img
+                    onClick={() => deleteComment(comment._id)}
+                    className="w-5 cursor-pointer"
+                    src={assets.bin_icon}
+                    alt=""
+                  />
+                </div>
+              </td>
+            </tr>
+          ))}
       </tbody>
     </table>
   );

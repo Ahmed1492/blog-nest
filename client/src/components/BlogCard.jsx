@@ -8,7 +8,7 @@ const BlogCard = ({ blog }) => {
       to={`/blog/${blog._id}`}
       onClick={() => scrollTo(0, 0)}
       key={blog._id}
-      className="flex flex-col gap-2 shadow-md rounded-lg w-88a pb-9 hover:scale-102 duration-300 overflow-hidden hover:shadow-2xl"
+      className="flex flex-col gap-2 shadow-md rounded-lg w-88a pb-9 hover:scale-102 duration-300 overflow-hidden hover:shadow-2xl max-h-100 "
     >
       <img className="aspect-video rounded-t-lg" src={blog.image} alt="image" />
       <div className="flex flex-col gap-3 px-4">

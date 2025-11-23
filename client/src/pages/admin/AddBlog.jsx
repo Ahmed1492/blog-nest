@@ -1,18 +1,65 @@
 import React, { useEffect, useRef, useState } from "react";
 import { assets, blogCategories } from "../../assets/assets";
 import Quill from "quill";
+import { toast } from "react-hot-toast";
+import axios from "axios";
+import { useAppContext } from "../../context/AppContext";
+
 const AddBlog = () => {
   const [image, setImage] = useState("");
   const [title, setTitle] = useState("");
   const [subTitle, setSubTitle] = useState("");
   const [category, setCategory] = useState("startup");
   const [isPublished, setIsPublished] = useState(false);
-
+  const [isAdding, setIsAdding] = useState(false);
+  const { backEndUrl, token } = useAppContext();
   const editorRef = useRef(null);
   const quillRef = useRef(null);
 
-  const onSubmitHandler = (e) => {
+  const addBlog = async () => {
+    try {
+      setIsAdding(true);
+      const blog = {
+        title,
+        subTitle,
+        description: quillRef.current.root.innerHTML,
+        category,
+        isPublished,
+      };
+
+      const formData = new FormData();
+      formData.append("blog", JSON.stringify(blog));
+      formData.append("image", image);
+      let myResponse = await axios.post(
+        `${backEndUrl}/api/blog/create-blog`,
+        formData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      console.log(myResponse.data);
+      if (myResponse.data.success) {
+        setTitle("");
+        setImage(false);
+        setSubTitle("");
+        quillRef.current.root.innerHTML = "";
+        setCategory("Startup");
+        toast.success(myResponse.data.message);
+      } else {
+        toast.error(myResponse.data.err);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    } finally {
+      setIsAdding(false);
+    }
+  };
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
+    await addBlog();
   };
 
   const generateContent = async () => {};
@@ -53,6 +100,7 @@ const AddBlog = () => {
             className="w-108 px-2 py-1.5 outline-0 border border-gray-300 rounded-md"
             placeholder="Type here"
             onChange={(e) => setTitle(e.target.value)}
+            value={title}
             name=""
             id=""
           />
@@ -64,6 +112,7 @@ const AddBlog = () => {
             className="w-108 px-2 py-1.5 outline-0 border border-gray-300 rounded-md"
             placeholder="Type here"
             onChange={(e) => setSubTitle(e.target.value)}
+            value={subTitle}
             name=""
             id=""
           />
@@ -85,6 +134,7 @@ const AddBlog = () => {
           </label>
           <select
             onChange={(e) => setCategory(e.target.value)}
+            value={category}
             type="text"
             className="w-40 text-gray-400 px-2 py-1.5 outline-0 border border-gray-300 rounded-md"
             placeholder="Type here"
@@ -92,7 +142,6 @@ const AddBlog = () => {
             <option value="">Select Category</option>
             {blogCategories.map((category, index) => (
               <option key={index} value={category}>
-                {" "}
                 {category}
               </option>
             ))}
@@ -106,6 +155,7 @@ const AddBlog = () => {
               className="scale-125 cursor-pointer"
               checked={isPublished}
               onChange={(e) => setIsPublished(e.target.checked)}
+              value={isPublished}
               type="checkbox"
             />
           </div>
@@ -114,7 +164,7 @@ const AddBlog = () => {
             type="submit"
             className="bg-primary text-white rounded-md py-1.5 px-10 w-40 font-light mt-7 cursor-pointer"
           >
-            Add Blog
+            {isAdding ? "Adding.." : "Add Blog"}
           </button>
         </form>
       </div>

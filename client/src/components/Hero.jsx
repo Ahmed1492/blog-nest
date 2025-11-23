@@ -1,7 +1,10 @@
 import React from "react";
 import { assets } from "../assets/assets";
+import { useAppContext } from "../context/AppContext";
 
 const Hero = () => {
+  const { blogs, input, setInput } = useAppContext();
+
   return (
     <div className="">
       <div className="bg-hero flex items-center flex-col justify-center gap-8 h-full relative">
@@ -26,6 +29,8 @@ const Hero = () => {
         </p>
         <div className="bg-white py-1.5 ps-3 pe-1 border border-gray-300 rounded-lg min-w-120 flex justify-between items-center  ">
           <input
+            onChange={(e) => setInput(e.target.value)}
+            value={input}
             className="outline-0 border-0 w-[80%]"
             type="text"
             placeholder="Search blogs"

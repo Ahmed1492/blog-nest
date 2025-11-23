@@ -1,7 +1,7 @@
 import React from "react";
 import { assets, dashboard_data } from "../../assets/assets";
 
-const ListBlogTable = () => {
+const ListBlogTable = ({ blogs, toggleBlog, deleteBlog }) => {
   function formatDate(isoString) {
     const date = new Date(isoString);
 
@@ -54,7 +54,7 @@ const ListBlogTable = () => {
           </tr>
         </thead>
         <tbody>
-          {dashboard_data.recentBlogs.map((data, index) => (
+          {blogs?.map((data, index) => (
             <tr key={index} className="border-gray-200  border-b text-gray-600">
               <td className="px-5  py-3 ">{index + 1}</td>
               <td className="px-3  py-3 ">{data.title}</td>
@@ -67,10 +67,18 @@ const ListBlogTable = () => {
                 {data.isPublished ? "Published" : "Unpublished"}
               </td>
               <td className="flex items-center gap-3 px-6  py-3">
-                <button className="border border-gray-400 px-4 py-3 rounded-md cursor-pointer min-w-28">
+                <button
+                  onClick={() => toggleBlog(data._id)}
+                  className="border border-gray-400 px-4 py-3 rounded-md cursor-pointer min-w-28"
+                >
                   {!data.isPublished ? "Published" : "Unpublished"}
                 </button>
-                <img className="w-9" src={assets.cross_icon} alt="" />
+                <img
+                  onClick={() => deleteBlog(data._id)}
+                  className="w-9 cursor-pointer"
+                  src={assets.cross_icon}
+                  alt=""
+                />
               </td>
             </tr>
           ))}

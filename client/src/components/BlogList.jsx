@@ -8,9 +8,20 @@ const BlogList = () => {
   const filters = ["All", "Technology", "Startup", "Lifestyle", "Finance"];
   const [currentLink, setCurrentLink] = useState("All");
 
-  const { fetchBlogs } = useAppContext();
+  const { blogs, input } = useAppContext();
+
+  const filterBlogs = () => {
+    if (input === "") return blogs;
+
+    return blogs.filter(
+      (blog) =>
+        blog.title.toLowerCase().includes(input.toLowerCase()) ||
+        blog.category.toLowerCase().includes(input.toLowerCase())
+    );
+  };
+
   useEffect(() => {
-    fetchBlogs();
+    // fetchBlogs();
   }, []);
   return (
     <div>
@@ -36,7 +47,7 @@ const BlogList = () => {
         ))}
       </div>
       <div className="w-[84%] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
-        {blog_data.map((blog, index) => {
+        {filterBlogs().map((blog, index) => {
           if (currentLink === blog.category || currentLink === "All")
             return (
               <React.Fragment key={index}>

@@ -17,7 +17,7 @@ export const AppProvider = ({ children }) => {
     try {
       let myResposne = await axios.get(`${backEndUrl}/api/blog/`);
 
-      console.log(myResposne.data);
+      // console.log(myResposne.data);
       if (myResposne.data.success) {
         setBlogs(myResposne.data.blogs);
       } else {
