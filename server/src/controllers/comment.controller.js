@@ -11,7 +11,7 @@ export const addComment = async (req, res, next) => {
       return res.json({ success: false, message: 'Blog not found' });
 
     const comment = await Comment.create({ blog, name, content });
-    return res.json({ success: true, message: "comment created successfully.", comment });
+    return res.json({ success: true, message: "comment added for review.", comment });
   } catch (error) {
     console.log(error);
     return res.json({ success: false, error: error.message, stack: error.stack });

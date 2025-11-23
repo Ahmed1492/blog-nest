@@ -19,7 +19,7 @@ router.get('/admin-blogs', getBlogsAdmin);
 router.get('/:id', getBlogById);
 
 // delete blog by id
-router.post('/', isAuth, deleteBlogById);
+router.post('/delete-blog', isAuth, deleteBlogById);
 
 // toggle blog Publish
 router.post('/toggle-publish', isAuth, togglePublish);
