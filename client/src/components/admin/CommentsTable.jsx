@@ -62,7 +62,7 @@ const CommentsTable = ({ comments, deleteComment, approveComment, filter }) => {
               <td className="ps-3 pe-6 py-4">
                 <p>
                   <span className="font-semibold">Blog : </span>
-                  {comment.content}
+                  {comment?.blog?.title}
                 </p>
                 <div className="mt-4 flex flex-col gap-1 mb-4">
                   <p>

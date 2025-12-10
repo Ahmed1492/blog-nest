@@ -4,7 +4,7 @@ import Quill from "quill";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useAppContext } from "../../context/AppContext";
-
+import { parse } from "marked";
 const AddBlog = () => {
   const [image, setImage] = useState("");
   const [title, setTitle] = useState("");
@@ -12,6 +12,7 @@ const AddBlog = () => {
   const [category, setCategory] = useState("startup");
   const [isPublished, setIsPublished] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { backEndUrl, token } = useAppContext();
   const editorRef = useRef(null);
   const quillRef = useRef(null);
@@ -62,7 +63,40 @@ const AddBlog = () => {
     await addBlog();
   };
 
-  const generateContent = async () => {};
+  const generateContent = async () => {
+    if (!title) return toast.error("please enter a title first");
+    try {
+      setLoading(true);
+      let myResponse = await axios.post(`${backEndUrl}/api/blog/generate`, {
+        prompt: title,
+      });
+      if (myResponse.data.success) {
+        quillRef.current.root.innerHTML = parse(myResponse.data.content);
+      } else {
+        let errorMessage = myResponse.data.err;
+        try {
+          const parsed = JSON.parse(myResponse.data.err);
+          if (parsed.error && parsed.error.message) {
+            errorMessage = parsed.error.message;
+          }
+        } catch (e) {
+          // Keep original if parse fails
+        }
+
+        toast.error(errorMessage);
+      }
+      console.log(myResponse.data);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   console.log("title ", title);
+  //   console.log("subTitle ", subTitle);
+  // }, [title, subTitle]);
 
   useEffect(() => {
     // intitiate Quill only once
@@ -120,12 +154,18 @@ const AddBlog = () => {
           <p className="mt-4 text-gray-600">Blog Description</p>
           <div className="max-w-lg h-74 pb-16 sm:pb-10 pt-2 relative">
             <div ref={editorRef}></div>
+            {loading && (
+              <div className="absolute left-0 right-0 top-0 bottom-0 flex items-center justify-center bg-black/10 mt-2 -mb-1 ">
+                <div className="w-8 h-8 rounded-full border-2 border-t-white animate-spin"></div>
+              </div>
+            )}
             <button
+              disabled={loading}
               className="absolute bottom-1 right-2 ml-2 text-xs text-white bg-black/70 px-4 py-1.5 rounded hover:underline cursor-pointer"
               onClick={generateContent}
               type="button"
             >
-              Generate with AI
+              {loading ? "Loading..." : "Generate with AI"}
             </button>
           </div>
 

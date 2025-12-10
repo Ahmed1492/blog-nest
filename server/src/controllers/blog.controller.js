@@ -1,3 +1,4 @@
+import main from "../../config/gemini.js";
 import imagekit from "../../config/imageKit.js";
 import Blog from "../../db/models/blog.model.js";
 import fs from "fs";
@@ -130,6 +131,32 @@ export const togglePublish = async (req, res) => {
       message: "Publish state toggled",
       isPublished: blog.isPublished,
     });
+
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      err: error.message,
+      stack: error.stack
+    });
+  }
+};
+
+
+
+export const generateContent = async (req, res, next) => {
+  try {
+    const { prompt } = req.body;
+
+    // const content = await main(prompt + ` Generate a blog content with bullet points and proper formatting`);
+
+    const content = await main(prompt + `Generate a detailed blog with the following formatting:
+          1. Use numbered sections (1, 2, 3...) for the main ideas.
+          2. Inside each section, add bullet points (•).
+          3. Include headings and subheadings.
+          4. Write in long text format.
+          5. Do NOT return plain text.`);
+    return res.json({ success: true, content });
 
   } catch (error) {
     console.log(error);

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createBlog, getBlogs, getBlogById, deleteBlogById, togglePublish, getBlogsAdmin } from "../controllers/blog.controller.js";
+import { createBlog, getBlogs, getBlogById, deleteBlogById, togglePublish, getBlogsAdmin, generateContent } from "../controllers/blog.controller.js";
 import upload from "../middleware/multer.js";
 import isAuth from "../middleware/auth.js";
 
@@ -23,5 +23,8 @@ router.post('/delete-blog', isAuth, deleteBlogById);
 
 // toggle blog Publish
 router.post('/toggle-publish', isAuth, togglePublish);
+
+// generate blog with AI
+router.post('/generate', generateContent);
 
 export default router;  

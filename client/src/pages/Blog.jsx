@@ -11,16 +11,20 @@ import toast from "react-hot-toast";
 
 const Blog = () => {
   const [blog, setBlog] = useState({});
+  const [error, setError] = useState(false);
   const { id } = useParams();
   const { backEndUrl } = useAppContext();
   const getBlogData = async () => {
+    setError(false);
     try {
       let myBlog = await axios.get(`${backEndUrl}/api/blog/${id}`);
       // console.log(myBlog.data.blog);
+      console.log(myBlog.data);
       if (myBlog.data.success) {
         setBlog(myBlog.data.blog);
       } else {
-        toast.error(myBlog.data.message);
+        setError(true);
+        // toast.error(myBlog.data.message);
       }
     } catch (error) {
       console.log(error);
@@ -34,6 +38,15 @@ const Blog = () => {
 
   if (!blog) {
     return <Loader />;
+  }
+  if (error) {
+    return (
+      <>
+        <h2 className="text-3xl m-8">404 Not Found Blog</h2>
+        <div className="min-h-[45vh]"></div>
+        <Footer />
+      </>
+    );
   }
   return (
     <div className="flex flex-col gap-5 mt-6 ">

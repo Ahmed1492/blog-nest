@@ -3,6 +3,7 @@ import truncate from "truncate";
 import { assets } from "../assets/assets";
 
 const BlogDetails = ({ blog }) => {
+
   function formatDate(isoString) {
     const date = new Date(isoString);
 
@@ -60,7 +61,7 @@ const BlogDetails = ({ blog }) => {
         dangerouslySetInnerHTML={{ __html: truncate(blog.subTitle) }}
       ></p>
       <button className="text-primary rounded-full border boreder-[#5044e5] py-1.5 px-4 text-sm cursor-pointer ">
-        Mickle Brown
+        Ahmed Mohamed
       </button>
       <div className="">
         <img className="w-200 rounded-2xl" src={blog.image} alt="blogImage" />

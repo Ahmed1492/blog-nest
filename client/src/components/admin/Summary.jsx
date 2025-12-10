@@ -1,36 +1,36 @@
 import React from "react";
-
 import { assets } from "../../assets/assets.js";
+
 const Summary = ({ blogs }) => {
+  const items = [
+    { count: blogs.blogs, label: "Blogs", icon: assets.dashboard_icon_1 },
+    { count: blogs.comments, label: "Comments", icon: assets.dashboard_icon_2 },
+    { count: blogs.draftBlogs, label: "Drafts", icon: assets.dashboard_icon_3 },
+  ];
+
   return (
-    <div className="flex flex-wrap items-start gap-x-4 gap-y-5 mt-8">
-      <div className="flex items-center gap-4 bg-white shadow px-5 py-3 text-sm md:text-base  rounded-lg min-w-[12rem]  md:w-[14rem] xl:w-[15rem]">
-        <img className="w-10 md:w-14" src={assets.dashboard_icon_1} alt="" />
-        <div className="flex flex-col items-centera  ">
-          <span className="font-semibold text-lg text-gray-600">
-            {blogs.blogs}
-          </span>
-          <span className="text-gray-500 font-extralight ">Blogs</span>
+    <div className="flex flex-wrap items-start gap-6 mt-8">
+      {items.map((item, i) => (
+        <div
+          key={i}
+          className=" cursor-pointer
+            flex items-center gap-4 
+            bg-white shadow 
+            px-6 py-4 
+            rounded-xl 
+            w-[14rem] md:w-[15rem] 
+            hover:scale-[1.05] transition-all duration-200
+          "
+        >
+          <img className="w-10 md:w-14" src={item.icon} alt="" />
+          <div className="flex flex-col">
+            <span className="font-semibold text-xl text-gray-700">
+              {item.count}
+            </span>
+            <span className="text-gray-500 text-sm">{item.label}</span>
+          </div>
         </div>
-      </div>
-      <div className="flex items-center gap-4 bg-white shadow px-5 py-3 text-sm md:text-base  rounded-lg min-w-[12rem]  md:w-[14rem] xl:w-[15rem]">
-        <img className="w-10 md:w-14" src={assets.dashboard_icon_2} alt="" />
-        <div className="flex flex-col items-centera  ">
-          <span className="font-semibold text-lg text-gray-600">
-            {blogs.comments}
-          </span>
-          <span className="text-gray-500 font-extralight ">Comments</span>
-        </div>
-      </div>
-      <div className="flex items-center gap-4 bg-white shadow px-5 py-3 text-sm md:text-base  rounded-lg min-w-[12rem]  md:w-[14rem] xl:w-[15rem]">
-        <img className="w-10 md:w-14" src={assets.dashboard_icon_3} alt="" />
-        <div className="flex flex-col items-centera  ">
-          <span className="font-semibold text-lg text-gray-600">
-            {blogs.draftBlogs}
-          </span>
-          <span className="text-gray-500 font-extralight ">Drafts</span>
-        </div>
-      </div>
+      ))}
     </div>
   );
 };
