@@ -8,7 +8,8 @@ export const AppProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [blogs, setBlogs] = useState([]);
   const [input, setInput] = useState("");
-  let backEndUrl = "http://localhost:2000";
+  let backEndUrl = import.meta.env.VITE_BACK_END_URL;
+
   const path = useLocation().pathname;
 
   const navigate = useNavigate();
@@ -40,12 +41,13 @@ export const AppProvider = ({ children }) => {
     fetchBlogs,
   };
 
-  useEffect(() => {
+  let url = useEffect(() => {
     fetchBlogs();
     const token = localStorage.getItem("blog-nest-token");
     if (token) {
       setToken(token);
     }
+
   }, [path]);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
