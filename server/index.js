@@ -7,25 +7,28 @@ import blogRouter from './src/routes/blog.router.js';
 import commentRouter from './src/routes/comment.router.js';
 const app = express();
 const port = process.env.PORT || 2000;
+const allowedOrigins = [
+  'https://blog-nest-client.vercel.app', // production frontend
+  'http://localhost:5173'                // local frontend
+];
+
 
 // Middlewares
 app.use(express.json());
+// Allowed origins
 
-const allowedOrigins = [
-  'http://localhost:5173',          // local dev
-  'https://blog-nest-client.vercel.app' // production
-];
+
+app.use(express.json());
 
 app.use(cors({
   origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps, curl, etc.)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
 
