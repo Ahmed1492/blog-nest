@@ -41,7 +41,6 @@ Admins can **leverage Google Gemini AI** to auto-generate blog content, speeding
 
 ### Frontend
 - React.js  
-- React Router DOM  
 - Tailwind CSS  
 - Axios  
 - Quill rich text editor  
@@ -57,7 +56,6 @@ Admins can **leverage Google Gemini AI** to auto-generate blog content, speeding
 - JWT Authentication  
 - Multer for image uploads  
 - CORS  
-- dotenv  
 - bcrypt for password hashing  
 - ImageKit (optional) for media optimization  
 
@@ -65,7 +63,7 @@ Admins can **leverage Google Gemini AI** to auto-generate blog content, speeding
 - MongoDB (Mongoose ORM)  
 
 ### State Management
-- Custom React Hooks + Context (frontend)  
+- Custom React Hooks 
 
 ---
 
